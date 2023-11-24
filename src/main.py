@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-# from src.api.dependencies import get_query_token, get_token_header
-# from src.api.routes import pois, users
+from src.api.dependencies import get_query_token, get_token_header
+from src.api.routes import pois, users
 from src.db.mongodb import connect_to_mongo, close_mongo_connection
 from src.core.config import settings
 
@@ -45,20 +45,20 @@ async def http_exception_handler(request, exc):
 
 
 # Dependency injection for specific routes
-# app.include_router(
-#     pois.router,
-#     prefix="/pois",
-#     tags=["pois"],
-#     dependencies=[Depends(get_token_header)],
-#     responses={404: {"description": "Not found"}},
-# )
-#
-# app.include_router(
-#     users.router,
-#     prefix="/users",
-#     tags=["users"],
-#     dependencies=[Depends(get_query_token)],
-# )
+app.include_router(
+    pois.router,
+    prefix="/pois",
+    tags=["pois"],
+    dependencies=[Depends(get_token_header)],
+    responses={404: {"description": "Not found"}},
+)
+
+app.include_router(
+    users.router,
+    prefix="/users",
+    tags=["users"],
+    dependencies=[Depends(get_query_token)],
+)
 
 
 # Root endpoint
